@@ -2,7 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext, StudentContext } from "../../App";
 
-const AddStudent = () => {
+const UpdateForm = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [studentData, setStudentData] = useState({});
   const { status, setStatus } = useContext(AppContext);
@@ -14,18 +15,37 @@ const AddStudent = () => {
       setStatus("logout");
       navigate("/");
     }
+    const fetchStudentData = async () => {
+      const res = await fetch(`/info/${id}`);
+      const data = await res.json();
+      if (data.error) {
+        setStatus("logout");
+        navigate("/");
+      } else {
+        setStudentData(data.data);
+        // const temp = { ...studentData };
+        // delete temp.password;
+        // setStudentData(temp);
+      }
+    };
+    fetchStudentData();
   }, []);
-  const addStudent = async (e) => {
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(false);
     setSuccess(false);
-    const res = await fetch(`/addStudent`, {
+    let temp = { ...studentData };
+    delete temp._id;
+    delete temp.__v;
+    temp.id = id;
+    const res = await fetch(`/updateStudent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(studentData),
+      body: JSON.stringify(temp),
     });
     const data = await res.json();
     if (data.error) {
@@ -36,13 +56,14 @@ const AddStudent = () => {
       setTimeout(() => {
         setSuccess(false);
         setLoading(false);
-        navigate("/admin/view_student");
+        navigate("/admin/update_student");
       }, 2000);
     }
   };
+
   return (
-    <div class="addstudent">
-      <form class="addform" onSubmit={addStudent}>
+    <div className="viewdata-main">
+      <form class="addform" onSubmit={handleUpdate}>
         {error ? (
           <div class="alert alert-danger" role="alert">
             Please Enter Correct Data and Try Again!!!
@@ -53,6 +74,7 @@ const AddStudent = () => {
             Information Updated Successfully!!!
           </div>
         ) : null}
+        <h2 class="mb-2 text-black">Student Information</h2>
         <div class="form-group row">
           <label for="inputEmail3" class="col-sm-2 col-form-label">
             Full Name
@@ -60,10 +82,10 @@ const AddStudent = () => {
           <div class="col-sm-10">
             <input
               type="text"
+              value={studentData.fullname}
               class="form-control"
               id="inputEmail3"
-              placeholder="name"
-              value={studentData.fullname ? studentData.fullname : ""}
+              placeholder="Email"
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.fullname = e.target.value;
@@ -79,10 +101,10 @@ const AddStudent = () => {
           <div class="col-sm-10">
             <input
               type="email"
+              value={studentData.email}
               class="form-control"
               id="inputEmail3"
               placeholder="Email"
-              value={studentData.email ? studentData.email : ""}
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.email = e.target.value;
@@ -92,16 +114,16 @@ const AddStudent = () => {
           </div>
         </div>
         <div class="form-group row mt-2">
-          <label for="inputPassword3" class="col-sm-2 col-form-label">
-            Password
+          <label for="inputEmail3" class="col-sm-2 col-form-label">
+            Email
           </label>
           <div class="col-sm-10">
             <input
               type="password"
-              class="form-control"
-              id="inputPassword3"
-              placeholder="Password"
               value={studentData.password ? studentData.password : ""}
+              class="form-control"
+              id="password"
+              placeholder="password"
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.password = e.target.value;
@@ -116,11 +138,11 @@ const AddStudent = () => {
           </label>
           <div class="col-sm-10">
             <input
-              type="text"
+              type="tel"
+              value={studentData.mobile}
               class="form-control"
               id="inputEmail3"
-              placeholder="e.g 8956895247"
-              value={studentData.mobile ? studentData.mobile : ""}
+              placeholder="Email"
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.mobile = e.target.value;
@@ -136,10 +158,10 @@ const AddStudent = () => {
           <div class="col-sm-10">
             <input
               type="number"
+              value={studentData.age}
               class="form-control"
               id="inputEmail3"
-              placeholder="e.g 21"
-              value={studentData.age ? studentData.age : ""}
+              placeholder="Email"
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.age = e.target.value;
@@ -155,10 +177,10 @@ const AddStudent = () => {
           <div class="col-sm-10">
             <input
               type="number"
+              value={studentData.rollno}
               class="form-control"
               id="inputEmail3"
-              placeholder="e.g 31352"
-              value={studentData.rollno ? studentData.rollno : ""}
+              placeholder="Email"
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.rollno = e.target.value;
@@ -173,11 +195,11 @@ const AddStudent = () => {
           </label>
           <div class="col-sm-10">
             <input
-              type="number"
+              type="text"
+              value={studentData.prn}
               class="form-control"
               id="inputEmail3"
-              placeholder="e.g 32134"
-              value={studentData.prn ? studentData.prn : ""}
+              placeholder="Email"
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.prn = e.target.value;
@@ -192,16 +214,16 @@ const AddStudent = () => {
           </label>
           <div class="col-sm-10">
             <input
-              type="number"
-              class="form-control"
-              id="inputEmail3"
-              placeholder="e.g 10"
-              value={studentData.cls ? studentData.cls : ""}
+              type="text"
+              value={studentData.cls}
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.cls = e.target.value;
                 setStudentData(temp);
               }}
+              class="form-control"
+              id="inputEmail3"
+              placeholder="Email"
             />
           </div>
         </div>
@@ -212,10 +234,10 @@ const AddStudent = () => {
           <div class="col-sm-10">
             <input
               type="text"
+              value={studentData.division}
               class="form-control"
-              id="division"
-              placeholder="e.g A"
-              value={studentData.division ? studentData.division : ""}
+              id="inputEmail3"
+              placeholder="Email"
               onChange={(e) => {
                 let temp = { ...studentData };
                 temp.division = e.target.value;
@@ -224,7 +246,7 @@ const AddStudent = () => {
             />
           </div>
         </div>
-        <div class="form-group row mt-2">
+        <div class="edit-btn form-group row">
           <div class="col-sm-10">
             {loading ? (
               <div class="spinner-border" role="status">
@@ -242,4 +264,4 @@ const AddStudent = () => {
   );
 };
 
-export default AddStudent;
+export default UpdateForm;

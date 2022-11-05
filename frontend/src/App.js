@@ -13,6 +13,7 @@ import EditData from "./components/studentComponents/editData";
 import LoginForm from "./components/loginComponent/loginForm";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createContext, useMemo, useState } from "react";
+import UpdateForm from "./components/adminComponents/updateForm";
 
 export const AppContext = createContext({
   status: "",
@@ -54,6 +55,7 @@ function App() {
               <Route path="view_student" element={<ViewStudent />} />
               <Route path="add_student" element={<AddStudent />} />
               <Route path="update_student" element={<UpdateStudent />} />
+              <Route path="update_student/:id" element={<UpdateForm />} />
               <Route path="delete_student" element={<DeleteStudent />} />
             </Route>
             <Route path="student" element={<StudentPage />}>

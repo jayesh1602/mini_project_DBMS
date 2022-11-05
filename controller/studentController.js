@@ -17,7 +17,6 @@ module.exports.viewData = async (req, res) => {
 
 module.exports.editData = async (req, res) => {
   const id = req.params.id;
-  console.log(id);
   const { fullname, email, mobile, age, prn, cls, division } = req.body;
   try {
     const data = await Student.updateOne(
