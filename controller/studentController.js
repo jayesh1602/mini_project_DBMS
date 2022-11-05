@@ -4,24 +4,27 @@ module.exports.viewData = async (req, res) => {
   const id = req.params.id;
   try {
     const data = await Student.findById(id);
-    console.log(id);
-    res.status(200).json({ data });
+    if (data) {
+      console.log(id);
+      res.status(200).json({ data });
+    } else {
+      res.status(404).json({ error: true });
+    }
   } catch (err) {
-    res.status(404).json({ error: "Something went wrong..." });
+    res.status(404).json({ error: true });
   }
 };
 
 module.exports.editData = async (req, res) => {
-  const id = req.params._id;
-  const { fullname, email, password, mobile, age, prn, cls, division } =
-    req.body;
+  const id = req.params.id;
+  console.log(id);
+  const { fullname, email, mobile, age, prn, cls, division } = req.body;
   try {
     const data = await Student.updateOne(
-      { id },
+      { _id: id },
       {
         fullname,
         email,
-        password,
         mobile,
         age,
         prn,
@@ -29,9 +32,14 @@ module.exports.editData = async (req, res) => {
         division,
       }
     );
-    res.json(data);
+    if (data) {
+      res.status(200).json({ data });
+    } else {
+      res.status(404).json({ error: true });
+    }
   } catch (err) {
-    res.status(404).json({ errors: "update date properly..." });
+    console.log(err);
+    res.status(404).json({ error: true });
   }
 };
 
@@ -39,12 +47,10 @@ module.exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await Student.login(email, password);
-    console.log(user);
-    console.log(email + password);
     res.status(200).json({ user });
   } catch (err) {
     // const errors = hadleErr(err);
     console.log(err);
-    res.status(404).json({ errors: "invalid credentials..." });
+    res.status(404).json({ error: true });
   }
 };

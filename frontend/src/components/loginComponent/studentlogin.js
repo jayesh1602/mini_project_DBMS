@@ -1,9 +1,21 @@
 import "../../css/login.css";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext, StudentContext } from "../../App";
+import { set } from "mongoose";
 
 const StudentLogin = () => {
   const navigate = useNavigate();
+
+  const { studentId, setStudentId } = useContext(StudentContext);
+  const { status, setStatus } = useContext(AppContext);
+  setStatus("student");
+  useEffect(() => {
+    if (status === "student") {
+      navigate("/student/view_profile");
+    }
+  }, []);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,9 +39,15 @@ const StudentLogin = () => {
     if (data.error) {
       setError(true);
       setLoading(false);
+      setStatus("logout");
     } else {
-      setLoading(false);
-      navigate("/student/view_profile");
+      setStatus("student");
+      console.log(data);
+      if (status === "student") {
+        setLoading(false);
+        setStudentId(data.user._id);
+        navigate(`/student/view_profile/${data.user._id}`);
+      }
     }
   };
 
