@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.login-main {
+  margin: 0 auto;
+  width: 28%;
+  margin-top: 2rem;
+}
+
+.login-main input{
+  margin: 10px;
+}
+
+.nav-item a {
+  text-decoration: none;
+}
+
+.table-row td {
+  padding: 1rem;
+}
+
+.addform input {
+  width: 500px;
+}
+
+.addstudent{
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.addstudent form{
+  box-shadow: 0 0 10px;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.table-row .btn{
+  color: #0e0e0e;
+  border: none;
+  margin-left: 10px;
+}
+
+.table-row .btn:hover{
+  background-color: black;
+  color: white;
+  
+}
+
+.viewdata-main{
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.edit-btn{
+  margin-top: 1.2rem;
+}
