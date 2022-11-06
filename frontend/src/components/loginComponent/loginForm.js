@@ -1,9 +1,18 @@
 import "../../css/login.css";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { AppContext } from "../../App";
 const LoginForm = () => {
+  const { status, setStatus } = useContext(AppContext);
   const navigate = useNavigate();
+  setStatus("admin");
+  useEffect(() => {
+    console.log(status);
+    if (status === "admin") {
+      navigate("/admin/view_student");
+    }
+  }, []);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,9 +36,13 @@ const LoginForm = () => {
     if (data.error) {
       setError(true);
       setLoading(false);
+      setStatus("logout");
     } else {
-      setLoading(false);
-      navigate("/admin/view_student");
+      setStatus("admin");
+      if (status === "admin") {
+        setLoading(false);
+        navigate("/admin/view_student");
+      }
     }
   };
 
@@ -38,7 +51,7 @@ const LoginForm = () => {
       <div class="text-center">
         <main class="form-signin w-100 m-auto">
           <form onSubmit={login}>
-            <h1 class="h3 mb-3 fw-normal">Login</h1>
+            <h1 class="h3 mb-3 fw-normal">Admin Login</h1>
             {error ? (
               <div class="alert alert-danger" role="alert">
                 Invalid Credentials!!!

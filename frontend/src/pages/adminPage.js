@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import ViewStudent from "../components/adminComponents/viewStudents";
 import { Link, Outlet } from "react-router-dom";
 const AdminPage = () => {
-  
-
-  
   return (
     <div style={{ width: "100vw" }}>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-3">
-        <a class="navbar-brand" href="#">
+        <a class="nav-head navbar-brand" href="#">
           Student Management System
         </a>
         <button
@@ -32,7 +29,7 @@ const AdminPage = () => {
             </li> */}
             <li class="nav-item">
               <Link to="/admin/view_student">
-                <a class="nav-link">Show Students</a>
+                <a class=" nav-link">Show Students</a>
               </Link>
             </li>
             <li class="nav-item">
@@ -47,7 +44,9 @@ const AdminPage = () => {
             </li>
             <li class="nav-item">
               <Link to="/admin/delete_student">
-                <a class="nav-link " href="#">Delete </a>
+                <a class="nav-link " href="#">
+                  Delete{" "}
+                </a>
               </Link>
             </li>
           </ul>
@@ -69,6 +68,10 @@ const AdminPage = () => {
         </Link>
       </div> */}
       <Outlet />
+
+      <div class="footer">
+        <p>copy right 2022 - 2023</p>
+      </div>
     </div>
   );
 };

@@ -1,18 +1,28 @@
 const Student = require("../model/student");
 
 module.exports.editDataAdmin = async (req, res) => {
-  const { id, fullname, email, password, mobile, age, prn, cls, division } =
-    req.body;
+  const {
+    id,
+    fullname,
+    email,
+    mobile,
+    age,
+    rollno,
+    prn,
+    cls,
+    division,
+  } = req.body;
+  
   try {
     const data = await Student.updateOne(
-      { id },
+      { _id: id },
       {
         fullname,
         email,
-        password,
         mobile,
         age,
         prn,
+        rollno,
         cls,
         division,
       }

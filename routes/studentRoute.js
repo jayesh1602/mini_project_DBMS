@@ -10,6 +10,6 @@ const router = Router();
 
 router.post("/login", login);
 router.get("/info/:id", viewData);
-router.get("/editInfo", editData);
+router.post("/editInfo/:id", editData);
 
 module.exports = router;

@@ -2,28 +2,30 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext, StudentContext } from "../../App";
 
-const EditData = () => {
+const UpdateForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { studentId, setStudentId } = useContext(StudentContext);
   const [studentData, setStudentData] = useState({});
   const { status, setStatus } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   useEffect(() => {
-    if (status !== "student") {
+    if (status !== "admin") {
       setStatus("logout");
-      navigate("/student_login");
+      navigate("/");
     }
     const fetchStudentData = async () => {
-      const res = await fetch(`/info/${studentId}`);
+      const res = await fetch(`/info/${id}`);
       const data = await res.json();
       if (data.error) {
         setStatus("logout");
-        navigate("/student_login");
+        navigate("/");
       } else {
         setStudentData(data.data);
+        // const temp = { ...studentData };
+        // delete temp.password;
+        // setStudentData(temp);
       }
     };
     fetchStudentData();
@@ -37,7 +39,10 @@ const EditData = () => {
     let temp = { ...studentData };
     delete temp._id;
     delete temp.__v;
-    const res = await fetch(`/editInfo/${studentId}`, {
+    temp.id = id;
+    console.log(temp.id);
+    console.log(temp.rollno);
+    const res = await fetch(`/updateStudent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +58,7 @@ const EditData = () => {
       setTimeout(() => {
         setSuccess(false);
         setLoading(false);
-        navigate(`/student/view_profile/${studentId}`);
+        navigate("/admin/update_student");
       }, 2000);
     }
   };
@@ -71,7 +76,7 @@ const EditData = () => {
             Information Updated Successfully!!!
           </div>
         ) : null}
-        <h2 class="mb-2 text-black">Update your Information</h2>
+        <h2 class="mb-2 text-black">Student Information</h2>
         <div class="form-group row">
           <label for="inputEmail3" class="col-sm-2 col-form-label">
             Full Name
@@ -110,6 +115,7 @@ const EditData = () => {
             />
           </div>
         </div>
+       
         <div class="form-group row mt-2">
           <label for="inputEmail3" class="col-sm-2 col-form-label">
             mobile
@@ -232,7 +238,7 @@ const EditData = () => {
               </div>
             ) : (
               <button type="submit" class="btn btn-primary text-white">
-                Update
+                Save
               </button>
             )}
           </div>
@@ -242,4 +248,4 @@ const EditData = () => {
   );
 };
 
-export default EditData;
+export default UpdateForm;
